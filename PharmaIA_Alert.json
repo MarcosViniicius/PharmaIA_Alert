@@ -20,14 +20,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        208,
-        0
+        -1040,
+        128
       ],
-      "id": "77388ea2-8a6c-44ca-82ab-e560d64eff03",
+      "id": "bec2eb50-b907-44af-bdf6-3721ad6a9974",
       "name": "Ler Estoque",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "gIl6S5YhHaLmEo4u",
+          "id": "5MM3dzZuMXg36uCB",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -53,15 +53,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        400,
-        0
+        -816,
+        128
       ],
-      "id": "4ed6b491-1448-4547-b123-8858a20727fd",
+      "id": "999d2306-3b14-4d67-9f2f-ba989981f651",
       "name": "Ler Clientes_interessados",
       "executeOnce": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "gIl6S5YhHaLmEo4u",
+          "id": "5MM3dzZuMXg36uCB",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -69,16 +69,18 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Você é um agente de IA de uma farmácia.\n\nAnalise apenas o cliente atual recebido do Google Sheets.\n\nCliente: {{ $json.Cliente }}\nMedicamento: {{ $json.Medicamento }}\nStatus: {{ $json.Status }}\n\nAntes de gerar a mensagem, verifique nos dados do estoque se o medicamento do cliente está com quantidade maior que 0.\n\nDados do estoque:\n{{ JSON.stringify($items(\"Ler Estoque\").map(item => item.json)) }}\n\nSe o status do cliente for \"Aguardando\" e o medicamento estiver disponível no estoque, gere apenas uma mensagem curta para esse cliente.\n\nSe não houver correspondência, responda apenas: IGNORAR\n\nNão use markdown.\nNão use \\n.\nNão use listas.\nNão dê orientação médica.\nNão prometa reserva.",
-        "options": {}
+        "text": "=Analise apenas o cliente atual recebido do Google Sheets.\n\nCliente: {{ $json.Cliente }}\nMedicamento: {{ $json.Medicamento }}\nStatus: {{ $json.Status }}\n\nVerifique nos dados do estoque se existe correspondência exata para o medicamento do cliente e se a quantidade disponível é maior que 0.\n\nDados do estoque:\n{{ JSON.stringify($items(\"Ler Estoque\").map(item => item.json)) }}\n\nGere uma mensagem somente se:\n- Status = \"Aguardando\"\n- Medicamento encontrado no estoque\n- Quantidade disponível maior que 0\n\nObjetivo da mensagem:\nInformar o cliente de forma direta que já é possível dar continuidade ao atendimento referente ao medicamento solicitado.\n\nA mensagem deve ser:\n- Curta\n- Direta\n- Profissional\n- Personalizada com o nome do cliente quando disponível\n- Escrita como um atendente experiente\n- Sem enrolação\n- Sem frases genéricas\n- Com foco em gerar resposta do cliente\n\nSe qualquer condição não for atendida, responda apenas:\nIGNORAR\n\nRetorne apenas a mensagem final ou IGNORAR.\n\nNão use markdown.\nNão use \\n.\nNão use listas.\nNão dê orientação médica.\nNão prometa reserva.\nNão invente informações.\nNão explique o raciocínio.\nNão mencione regras internas, estoque ou quantidade disponível.",
+        "options": {
+          "systemMessage": "Você é um agente de IA de uma farmácia. Sua função é verificar disponibilidade de medicamentos e gerar mensagens de notificação para clientes."
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        608,
-        0
+        -656,
+        -16
       ],
-      "id": "e95d5925-1fd4-42e3-ac01-0555e84ac50d",
+      "id": "1fc11c2a-47c9-4b97-acc1-028d1fb99639",
       "name": "AI Agent",
       "executeOnce": false
     },
@@ -89,14 +91,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        480,
-        208
+        -256,
+        640
       ],
-      "id": "1d041af4-2a6f-41fa-a984-2379008f974f",
+      "id": "967004eb-62e9-4eda-927f-35234c409c49",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "8CH0GG9FPAYgpGnS",
+          "id": "AOYWz1wi1FEr6l9G",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -112,10 +114,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        16,
-        0
+        -1264,
+        128
       ],
-      "id": "e0be95a4-a976-418e-8969-56fd4e637fc2",
+      "id": "95497f37-0e33-4bfb-b050-5b7fda94184c",
       "name": "Schedule Trigger"
     },
     {
@@ -145,10 +147,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        928,
-        0
+        0,
+        160
       ],
-      "id": "2a44c034-dbbc-4820-9165-968e22a964ee",
+      "id": "9cd4da0d-200b-4fdf-bc70-7e468bb6780f",
       "name": "If"
     },
     {
@@ -161,15 +163,15 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1136,
-        -80
+        240,
+        32
       ],
-      "id": "ac83abb5-3a7e-4768-80e9-e989b02fab8f",
+      "id": "80dab24e-022c-431e-89ee-196dc9f4e522",
       "name": "Send a message",
       "webhookId": "e859a94b-ddfb-406c-b718-fe3ef093fe27",
       "credentials": {
         "gmailOAuth2": {
-          "id": "IiiPJCNtscSSm4O2",
+          "id": "GVaTlgRL0atLzC5I",
           "name": "Gmail OAuth2 API"
         }
       }
@@ -266,14 +268,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1344,
-        -80
+        448,
+        32
       ],
-      "id": "ba682b64-be68-4bd4-9292-b5b43dca82d9",
+      "id": "209b8096-d494-4dec-9ef5-a07935874325",
       "name": "Update row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "gIl6S5YhHaLmEo4u",
+          "id": "5MM3dzZuMXg36uCB",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -300,8 +302,10 @@
           "value": {
             "Cliente": "={{ $('Ler Clientes_interessados').item.json.Cliente }}",
             "Medicamento": "={{ $('Ler Clientes_interessados').item.json.Medicamento }}",
+            "Data": "={{ $now.format('dd/MM/yyyy HH:mm') }}",
             "Status": "Enviado",
-            "Data": "={{ $now.format('dd/MM/yyyy HH:mm') }}"
+            "Mensagem": "={{ $('AI Agent').item.json.output }}",
+            "Motivo": ""
           },
           "matchingColumns": [],
           "schema": [
@@ -350,17 +354,186 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1552,
-        -80
+        640,
+        32
       ],
-      "id": "30985808-359f-41bd-830a-a962051540f8",
+      "id": "4e0b960a-8922-46a5-b9aa-8a958441f5cc",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "gIl6S5YhHaLmEo4u",
+          "id": "5MM3dzZuMXg36uCB",
           "name": "Google Sheets OAuth2 API"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1589698427,
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Cliente": "={{ $('Ler Clientes_interessados').item.json.Cliente }}",
+            "Medicamento": "={{ $('Ler Clientes_interessados').item.json.Medicamento }}",
+            "Data": "={{ $now.format('dd/MM/yyyy HH:mm') }}",
+            "Status": "Ignorado",
+            "Motivo": "Medicamento indisponível ou cliente não está aguardando"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Cliente",
+              "displayName": "Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Medicamento",
+              "displayName": "Medicamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mensagem",
+              "displayName": "Mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Motivo",
+              "displayName": "Motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        240,
+        240
+      ],
+      "id": "84e2fe75-35e5-46ee-ad01-723642d1c2f5",
+      "name": "Registrar Falha",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5MM3dzZuMXg36uCB",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openrouter/free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        240
+      ],
+      "id": "d358fd79-bc00-46f7-88ea-cadcdc9c4f3a",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "ppxh0TBH2gfcVKB6",
+          "name": "OpenRouter account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analise apenas o cliente atual recebido do Google Sheets.\n\nCliente: {{ $json.Cliente }}\nMedicamento: {{ $json.Medicamento }}\nStatus: {{ $json.Status }}\n\nVerifique nos dados do estoque se existe correspondência exata para o medicamento do cliente e se a quantidade disponível é maior que 0.\n\nDados do estoque:\n{{ JSON.stringify($items(\"Ler Estoque\").map(item => item.json)) }}\n\nGere uma mensagem somente se:\n- Status = \"Aguardando\"\n- Medicamento encontrado no estoque\n- Quantidade disponível maior que 0\n\nObjetivo da mensagem:\nInformar o cliente de forma direta que já é possível dar continuidade ao atendimento referente ao medicamento solicitado.\n\nA mensagem deve ser:\n- Curta\n- Direta\n- Profissional\n- Personalizada com o nome do cliente quando disponível\n- Escrita como um atendente experiente\n- Sem enrolação\n- Sem frases genéricas\n- Com foco em gerar resposta do cliente\n\nSe qualquer condição não for atendida, responda apenas:\nIGNORAR\n\nRetorne apenas a mensagem final ou IGNORAR.\n\nNão use markdown.\nNão use \\n.\nNão use listas.\nNão dê orientação médica.\nNão prometa reserva.\nNão invente informações.\nNão explique o raciocínio.\nNão mencione regras internas, estoque ou quantidade disponível.",
+        "options": {
+          "systemMessage": "Você é um agente de IA de uma farmácia. Sua função é verificar disponibilidade de medicamentos e gerar mensagens de notificação para clientes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -256,
+        432
+      ],
+      "id": "be9e5d34-a795-444c-b73a-f70b518f5346",
+      "name": "AI Agent Gemini Fallback",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.error }}",
+              "operator": {
+                "type": "object",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -352,
+        128
+      ],
+      "id": "81873bce-ea67-4585-8677-867cc5c9974e",
+      "name": "OpenRouter Falhou?"
     }
   ],
   "pinData": {},
@@ -391,7 +564,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI Agent Gemini Fallback",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -413,7 +586,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "OpenRouter Falhou?",
             "type": "main",
             "index": 0
           }
@@ -425,6 +598,13 @@
         [
           {
             "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar Falha",
             "type": "main",
             "index": 0
           }
@@ -452,6 +632,46 @@
           }
         ]
       ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Falhou?": {
+      "main": [
+        [
+          {
+            "node": "AI Agent Gemini Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Gemini Fallback": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -459,11 +679,10 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "41954c79-0b5a-47e3-96a7-46ac339bbecb",
+  "versionId": "8378a0e3-2549-4597-a3e5-5a3ec2c9a352",
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "e9033634e18a5ceb874f245340b4d367c588efb47036a46e4c87c6b4fe126886"
+    "instanceId": "27b714552a025129b7ceb44b3b49c31ccc21c7f2a4af04dce92b90722b7d295f"
   },
-  "id": "wBMwsz7vjKA7sapm",
+  "id": "kJV85cxIvr5VeAdN",
   "tags": []
 }
