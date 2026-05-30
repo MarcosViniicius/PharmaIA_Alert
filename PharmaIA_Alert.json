@@ -20,14 +20,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -688,
-        1728
+        208,
+        0
       ],
-      "id": "a7ad6fb1-ce81-4313-bf9e-6184e0eaf163",
-      "name": "Ler Estoque1",
+      "id": "77388ea2-8a6c-44ca-82ab-e560d64eff03",
+      "name": "Ler Estoque",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "5MM3dzZuMXg36uCB",
+          "id": "gIl6S5YhHaLmEo4u",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -53,15 +53,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -464,
-        1728
+        400,
+        0
       ],
-      "id": "7c55a8a9-e872-4a22-84f1-4290432214ed",
-      "name": "Ler Clientes_interessados1",
+      "id": "4ed6b491-1448-4547-b123-8858a20727fd",
+      "name": "Ler Clientes_interessados",
       "executeOnce": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "5MM3dzZuMXg36uCB",
+          "id": "gIl6S5YhHaLmEo4u",
           "name": "Google Sheets OAuth2 API"
         }
       }
@@ -69,17 +69,17 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Você é um agente de IA de uma farmácia.\n\nAnalise apenas o cliente atual recebido do Google Sheets.\n\nCliente: {{ $json.Cliente }}\nMedicamento: {{ $json.Medicamento }}\nStatus: {{ $json.Status }}\n\nAntes de gerar a mensagem, verifique nos dados do estoque se o medicamento do cliente está com quantidade maior que 0.\n\nDados do estoque:\n{{ JSON.stringify($items(\"Ler Estoque1\").map(item => item.json)) }}\n\nSe o status do cliente for \"Aguardando\" e o medicamento estiver disponível no estoque, gere apenas uma mensagem curta para esse cliente.\n\nSe não houver correspondência, responda apenas: IGNORAR\n\nNão use markdown.\nNão use \\n.\nNão use listas.\nNão dê orientação médica.\nNão prometa reserva.",
+        "text": "=Você é um agente de IA de uma farmácia.\n\nAnalise apenas o cliente atual recebido do Google Sheets.\n\nCliente: {{ $json.Cliente }}\nMedicamento: {{ $json.Medicamento }}\nStatus: {{ $json.Status }}\n\nAntes de gerar a mensagem, verifique nos dados do estoque se o medicamento do cliente está com quantidade maior que 0.\n\nDados do estoque:\n{{ JSON.stringify($items(\"Ler Estoque\").map(item => item.json)) }}\n\nSe o status do cliente for \"Aguardando\" e o medicamento estiver disponível no estoque, gere apenas uma mensagem curta para esse cliente.\n\nSe não houver correspondência, responda apenas: IGNORAR\n\nNão use markdown.\nNão use \\n.\nNão use listas.\nNão dê orientação médica.\nNão prometa reserva.",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -240,
-        1728
+        608,
+        0
       ],
-      "id": "5ffd4e17-f0b7-493c-babf-1cf2e0aaec12",
-      "name": "AI Agent1",
+      "id": "e95d5925-1fd4-42e3-ac01-0555e84ac50d",
+      "name": "AI Agent",
       "executeOnce": false
     },
     {
@@ -89,14 +89,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        -168,
-        1952
+        480,
+        208
       ],
-      "id": "29889ad0-5278-4816-8290-c893aa3b0ef6",
-      "name": "Google Gemini Chat Model1",
+      "id": "1d041af4-2a6f-41fa-a984-2379008f974f",
+      "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
-          "id": "AOYWz1wi1FEr6l9G",
+          "id": "8CH0GG9FPAYgpGnS",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -112,58 +112,341 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -912,
-        1728
+        16,
+        0
       ],
-      "id": "d8bd6470-e506-492a-a629-de84733438bf",
-      "name": "Schedule Trigger1"
+      "id": "e0be95a4-a976-418e-8969-56fd4e637fc2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e8a91731-c86b-45bc-8897-4999b4986a69",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "IGNORAR",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        928,
+        0
+      ],
+      "id": "2a44c034-dbbc-4820-9165-968e22a964ee",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Ler Clientes_interessados').item.json.Email }}",
+        "subject": "medicamento disponivel",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1136,
+        -80
+      ],
+      "id": "ac83abb5-3a7e-4768-80e9-e989b02fab8f",
+      "name": "Send a message",
+      "webhookId": "e859a94b-ddfb-406c-b718-fe3ef093fe27",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "IiiPJCNtscSSm4O2",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU",
+          "mode": "list",
+          "cachedResultName": "PharmaIA_Alert",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1503359951,
+          "mode": "list",
+          "cachedResultName": "Clientes_Interessados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU/edit#gid=1503359951"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Avisado",
+            "row_number": "={{ $('Ler Clientes_interessados').item.json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Cliente",
+              "displayName": "Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Medicamento",
+              "displayName": "Medicamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1344,
+        -80
+      ],
+      "id": "ba682b64-be68-4bd4-9292-b5b43dca82d9",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gIl6S5YhHaLmEo4u",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU",
+          "mode": "list",
+          "cachedResultName": "PharmaIA_Alert",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1589698427,
+          "mode": "list",
+          "cachedResultName": "Log_Notificacoes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU/edit#gid=1589698427"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Cliente": "={{ $('Ler Clientes_interessados').item.json.Cliente }}",
+            "Medicamento": "={{ $('Ler Clientes_interessados').item.json.Medicamento }}",
+            "Status": "Enviado",
+            "Data": "={{ $now.format('dd/MM/yyyy HH:mm') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Cliente",
+              "displayName": "Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Medicamento",
+              "displayName": "Medicamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Data",
+              "displayName": "Data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1552,
+        -80
+      ],
+      "id": "30985808-359f-41bd-830a-a962051540f8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gIl6S5YhHaLmEo4u",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
     }
   ],
   "pinData": {},
   "connections": {
-    "Ler Estoque1": {
+    "Ler Estoque": {
       "main": [
         [
           {
-            "node": "Ler Clientes_interessados1",
+            "node": "Ler Clientes_interessados",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Ler Clientes_interessados1": {
+    "Ler Clientes_interessados": {
       "main": [
         [
           {
-            "node": "AI Agent1",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "AI Agent1": {
-      "main": [
-        []
-      ]
-    },
-    "Google Gemini Chat Model1": {
+    "Google Gemini Chat Model": {
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent1",
+            "node": "AI Agent",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "Schedule Trigger1": {
+    "Schedule Trigger": {
       "main": [
         [
           {
-            "node": "Ler Estoque1",
+            "node": "Ler Estoque",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
@@ -176,11 +459,11 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "f85dbb6c-a54b-428f-ad99-611e89a2f5aa",
+  "versionId": "41954c79-0b5a-47e3-96a7-46ac339bbecb",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "27b714552a025129b7ceb44b3b49c31ccc21c7f2a4af04dce92b90722b7d295f"
+    "instanceId": "e9033634e18a5ceb874f245340b4d367c588efb47036a46e4c87c6b4fe126886"
   },
-  "id": "CbQNKfDO0XEs29GE",
+  "id": "wBMwsz7vjKA7sapm",
   "tags": []
 }
