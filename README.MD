@@ -43,6 +43,38 @@ Desenvolver um agente inteligente capaz de:
 
 ---
 
+# Instruções para importar e executar o workflow
+
+1. Acesse sua conta no n8n.
+2. Clique em **Import workflow**.
+3. Selecione o arquivo `PharmaIA_Alert.json`.
+4. Após importar, configure as credenciais necessárias:
+   - Google Sheets OAuth2
+   - Gmail OAuth2
+   - OpenRouter API
+   - Google Gemini API
+5. Crie ou vincule uma planilha Google chamada `PharmaIA_Alert`.
+6. A planilha deve conter as abas:
+   - `Estoque`
+   - `Clientes_Interessados`
+   - `Log_Notificacoes`
+7. Confira se as colunas seguem o padrão esperado:
+   - Estoque: `Medicamento`, `Quantidade`
+   - Clientes_Interessados: `Cliente`, `Telefone`, `Email`, `Medicamento`, `Status`
+   - Log_Notificacoes: `Cliente`, `Medicamento`, `Data`, `Status`, `Mensagem`, `Motivo`
+8. No n8n, atualize os nós do Google Sheets para apontarem para a sua planilha.
+9. Execute o workflow manualmente para teste ou ative o `Schedule Trigger` para execução automática.
+
+# Variáveis e credenciais necessárias
+
+```env
+GOOGLE_SHEETS_CREDENTIAL=SUA_CREDENCIAL_GOOGLE_SHEETS_AQUI
+GMAIL_CREDENTIAL=SUA_CREDENCIAL_GMAIL_AQUI
+OPENROUTER_API_KEY=SUA_CHAVE_OPENROUTER_AQUI
+GEMINI_API_KEY=SUA_CHAVE_GEMINI_AQUI
+
+---
+
 # Arquitetura da Solução
 
 O sistema foi desenvolvido utilizando a plataforma n8n para orquestração dos fluxos de automação.
