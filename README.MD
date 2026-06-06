@@ -94,6 +94,53 @@ Fluxo principal:
 
 ---
 
+# Armazenamento dos Dados
+
+O PharmaIA Alert utiliza o Google Sheets como solução de armazenamento de dados durante a fase de prototipação e desenvolvimento acadêmico.
+
+As informações são organizadas em diferentes abas da planilha:
+
+## Estoque
+
+Armazena os medicamentos disponíveis e suas respectivas quantidades.
+
+## Clientes_Interessados
+
+Armazena os clientes que desejam ser notificados quando um medicamento voltar a estar disponível, incluindo dados como, telefone, email, medicamento e o satus.
+
+## Log_Notificacoes
+
+Armazena o histórico de notificações enviadas pelo sistema, incluindo cliente, medicamento, data e status da operação.
+
+# Justificativa da Escolha
+
+O Google Sheets foi escolhido por apresentar:
+
+- Fácil integração com o n8n;
+- Simplicidade de configuração;
+- Baixo custo de implementação;
+- Facilidade de visualização dos dados;
+- Adequação ao escopo acadêmico do projeto.
+
+# Segurança e Privacidade
+
+O acesso às planilhas é controlado por permissões da conta Google utilizada no projeto.
+
+O sistema armazena apenas os dados mínimos necessários para funcionamento da solução, como:
+
+- Nome do cliente;
+- E-mail;
+- Medicamento solicitado;
+- Status da solicitação.
+
+Nenhuma credencial, chave de API ou informação sensível é armazenada no repositório GitHub.
+
+# Evolução Futura
+
+Em um ambiente de produção, o Google Sheets poderá ser substituído por soluções mais robustas de armazenamento, como PostgreSQL, MySQL ou Firebase, oferecendo maior escalabilidade, desempenho e controle de acesso.
+
+---
+
 # Funcionamento do Agente
 
 ## Percepção
