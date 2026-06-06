@@ -175,6 +175,20 @@ Os dados são utilizados exclusivamente para notificação de disponibilidade de
 
 Nenhuma informação é compartilhada com terceiros e o tratamento dos dados é realizado apenas para a finalidade prevista pelo sistema.
 
+# Boas práticas adotadas
+
+- Coleta apenas dos dados mínimos necessários para o funcionamento do serviço.
+- Utilização dos dados exclusivamente para comunicação com o cliente.
+- Não armazenamento de informações sensíveis de saúde, receitas médicas ou dados financeiros.
+- Possibilidade de remoção dos dados do cliente mediante solicitação.
+
+# Conformidade com a LGPD
+
+- Finalidade: uso dos dados apenas para notificação de medicamentos.
+- Necessidade: coleta apenas das informações essenciais.
+- Transparência: o cliente sabe quais dados são armazenados e para qual finalidade.
+- Segurança: credenciais e chaves de acesso não são expostas publicamente.
+
 ---
 
 # Resultados Esperados
