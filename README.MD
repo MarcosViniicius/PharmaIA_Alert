@@ -1,3 +1,4 @@
+
 # PharmaIA_Alert
 
 ## Squad 5
@@ -55,6 +56,7 @@ Desenvolver um agente inteligente capaz de:
    - Google Gemini API
 5. Crie ou vincule uma planilha Google chamada `PharmaIA_Alert`.
 6. A planilha deve conter as abas:
+link da planilha: https://docs.google.com/spreadsheets/d/1O0il2zBV-4O81t5bb30GXcmTa_PMVhbJCcSjvnHWTJU/edit?gid=0#gid=0
    - `Estoque`
    - `Clientes_Interessados`
    - `Log_Notificacoes`
