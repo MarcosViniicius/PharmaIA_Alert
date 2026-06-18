@@ -5,11 +5,13 @@
 
 ### Integrantes
 
-* Marcos Vinicius
-* Rafael
-* Yan Gustavo
-* Jardson
-* Iury
+* Marcos Vinicius de Lucena - 1282515264
+* Rafael Bulhões Emerenciano -12825128576
+* Iury Thierry - 12825137136
+* Yan Gustavo 12825135945
+* Jardson Ribeiro Costa- 12825132136
+* Richard Ryan 12826125846
+
 
 ---
 
